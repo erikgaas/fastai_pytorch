@@ -155,7 +155,9 @@ def transform_datasets(train_ds:Dataset, valid_ds:Dataset, test_ds:Optional[Data
     "Create train, valid and maybe test DatasetTfm` using `tfms` = (train_tfms,valid_tfms)"
     res = [DatasetTfm(train_ds, tfms[0],  **kwargs),
            DatasetTfm(valid_ds, tfms[1],  **kwargs)]
-    if test_ds is not None: res.append(DatasetTfm(test_ds, tfms[1],  **kwargs))
+    if test_ds is not None:
+        kwargs['tfm_y'] = False
+        res.append(DatasetTfm(test_ds, tfms[1], **kwargs))
     return res
 
 def normalize(x:TensorImage, mean:float,std:float)->TensorImage:   return (x-mean[...,None,None]) / std[...,None,None]
